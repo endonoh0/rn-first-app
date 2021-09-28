@@ -9,11 +9,19 @@ export default function App() {
 	const [openAddMode, setOpenAddMode] = useState(false);
 
 	const addGoalHandler = (goalTitle) => {
-		setCourseGoals(currentGoals => [...currentGoals, { id: Math.random().toString(), value: goalTitle }]);
+		setCourseGoals(currentGoals => [
+			...currentGoals,
+			{ id: Math.random().toString(), value: goalTitle }
+		]);
+		setOpenAddMode(false);
 	};
 
 	const removeGoalHandler = (goalId) => {
 		setCourseGoals(currentGoals => currentGoals.filter(goal => goal.id !== goalId));
+	}
+
+	const cancelAddGoalHandler = () => {
+		setOpenAddMode(false);
 	}
 
 	const openAddModeHandler = () => setOpenAddMode(true);
@@ -21,7 +29,11 @@ export default function App() {
   return (
     <View style={styles.screen}>
 			<Button title="Add new goal" onPress={openAddModeHandler} />
-			<GoalInput visible={openAddMode} onAddGoal={addGoalHandler} />
+			<GoalInput
+				visible={openAddMode}
+				onAddGoal={addGoalHandler}
+				onCancel={cancelAddGoalHandler}
+			/>
 			<FlatList
 				keyExtractor={(item, index) => item.id}
 				data={courseGoals}
